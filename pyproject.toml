@@ -19,8 +19,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/101t/bigbluebutton-api-python"
-Issues = "https://github.com/101t/bigbluebutton-api-python/issues"
+Homepage = "https://github.com/101t/bigbluebutton-python"
+Issues = "https://github.com/101t/bigbluebutton-python/issues"
 
 [tool.setuptools.packages.find]
 include = ["bigbluebutton_api_python*"]
