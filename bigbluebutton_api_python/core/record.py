@@ -11,9 +11,12 @@ class Record:
         self.__startTime = xml["startTime"]
 
         self.__endTime = xml["endTime"]
-        self.__playbackType = xml["playback"]["format"]["type"]
-        self.__playbackUrl = xml["playback"]["format"]["url"]
-        self.__playbackLength = xml["playback"]["format"]["length"]
+        fmt = xml["playback"]["format"]
+        if isinstance(fmt, list):  # several playback formats (e.g. presentation + video): use the first
+            fmt = fmt[0]
+        self.__playbackType = fmt["type"]
+        self.__playbackUrl = fmt["url"]
+        self.__playbackLength = fmt["length"]
         self.meta = MetaData(xml["metadata"])
 
     def get_recordid(self):

@@ -1,3 +1,4 @@
+from .base import BaseResponse
 
 from .apiversion import ApiVersionResponse
 from .createmeeting import CreateMeetingResponse
@@ -8,6 +9,5 @@ from .getmeetings import GetMeetingsResponse
 from .getrecordings import GetRecordingsResponse
 from .ismeetingrunning import IsMeetingRunningResponse
 from .publishrecordings import PublishRecordingsResponse
-from .setconfigxml import SetConfigXMLResponse
 from .updaterecordings import UpdateRecordingsResponse
 from .getattendance import GetAttendanceResponse

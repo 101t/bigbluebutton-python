@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bigbluebutton-python"
+version = "1.0.0"
+description = "Python client for the BigBlueButton 3.x API"
+readme = "README.md"
+license = "LGPL-3.0-or-later"
+authors = [{ name = "Tarek Kalaji" }]
+requires-python = ">=3.9"
+dependencies = ["jxmlease>=1.0"]
+keywords = ["bigbluebutton", "bbb", "api", "video-conferencing"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Communications :: Conferencing",
+]
+
+[project.urls]
+Homepage = "https://github.com/101t/bigbluebutton-api-python"
+Issues = "https://github.com/101t/bigbluebutton-api-python/issues"
+
+[tool.setuptools.packages.find]
+include = ["bigbluebutton_api_python*"]

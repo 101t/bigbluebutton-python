@@ -1,51 +1,26 @@
-
-from hashlib import sha1
-from re import match
-
-import sys
-if sys.version_info[0] == 2:
-    from urllib import quote_plus
-else:
-    try:
-        from urllib.request import quote_plus
-    except:
-        from urllib.parse import quote_plus
+import hashlib
+from urllib.parse import urlencode
 
 
 class UrlBuilder:
-    def __init__(self, bbbServerBaseUrl, securitySalt):
-        if not match('/[http|https]:\/\/[a-zA-Z1-9.]*\/bigbluebutton\/api\//', bbbServerBaseUrl):
-            if not bbbServerBaseUrl.startswith("http://") and not bbbServerBaseUrl.startswith("https://"):
-                bbbServerBaseUrl = "http://" + bbbServerBaseUrl
-            if not bbbServerBaseUrl.endswith("/bigbluebutton/api/"):
-                bbbServerBaseUrl = bbbServerBaseUrl[:(bbbServerBaseUrl.find("/", 8)
-                    if bbbServerBaseUrl.find("/", 8) != -1 else len(bbbServerBaseUrl))] + "/bigbluebutton/api/"
+    CHECKSUM_ALGORITHMS = ("sha1", "sha256", "sha384", "sha512")
 
-        self.securitySalt         = securitySalt
-        self.bbbServerBaseUrl     = bbbServerBaseUrl
+    def __init__(self, bbbServerBaseUrl, securitySalt, checksum_algorithm="sha1"):
+        if checksum_algorithm not in self.CHECKSUM_ALGORITHMS:
+            raise ValueError("checksum_algorithm must be one of %s" % (self.CHECKSUM_ALGORITHMS,))
+        if not bbbServerBaseUrl.startswith(("http://", "https://")):
+            bbbServerBaseUrl = "https://" + bbbServerBaseUrl
+        if not bbbServerBaseUrl.endswith("/bigbluebutton/api/"):
+            host_end = bbbServerBaseUrl.find("/", 8)
+            bbbServerBaseUrl = bbbServerBaseUrl[:host_end if host_end != -1 else None] + "/bigbluebutton/api/"
 
-    def buildUrl(self, api_call, params={}):
-        url = self.bbbServerBaseUrl
-        url += api_call + "?"
-        for key, value in params.items():
-            if isinstance(value, bool):
-                value = "true" if value else "false"
-            else:
-                value = str(value)
-            url += key + "=" + quote_plus(value) + "&"
+        self.securitySalt = securitySalt
+        self.bbbServerBaseUrl = bbbServerBaseUrl
+        self.checksum_algorithm = checksum_algorithm
 
-        url += "checksum=" + self.__get_checksum(api_call, params)
-        return url
-
-    def __get_checksum(self, api_call, params={}):
-        secret_str = api_call
-        for key, value in params.items():
-            if isinstance(value, bool):
-                value = "true" if value else "false"
-            else:
-                value = str(value)
-            secret_str += key + "=" + quote_plus(value) + "&"
-        if secret_str.endswith("&"):
-            secret_str = secret_str[:-1]
-        secret_str += self.securitySalt
-        return sha1(secret_str.encode('utf-8')).hexdigest()
+    def buildUrl(self, api_call, params=None):
+        query = urlencode({k: ("true" if v else "false") if isinstance(v, bool) else str(v)
+                           for k, v in (params or {}).items()})
+        checksum = hashlib.new(self.checksum_algorithm,
+                               (api_call + query + self.securitySalt).encode("utf-8")).hexdigest()
+        return self.bbbServerBaseUrl + api_call + "?" + (query + "&" if query else "") + "checksum=" + checksum

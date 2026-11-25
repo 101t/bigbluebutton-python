@@ -1,13 +1,9 @@
-import sys
 from .meeting import Meeting
 
 
 class MeetingInfo(Meeting):
     def __init__(self, xml):
-        if sys.version_info[0] == 2:
-            super(MeetingInfo, self).__init__(xml)
-        else:
-            super().__init__(xml)
+        super().__init__(xml)
 
         self.__internalMeetingId = xml["internalMeetingID"]
         self.__recording = xml["recording"] == 'true'

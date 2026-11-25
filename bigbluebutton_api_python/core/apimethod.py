@@ -1,38 +1,17 @@
-import sys
-if sys.version_info[0] == 2:
-    "2.x"
-    from abc import ABCMeta
-    class ApiMethod:
-        __metaclass__ = ABCMeta
-        VERSION                = ''
-        CREATE                 = 'create'
-        JOIN                   = 'join'
-        END                    = 'end'
-        IS_MEETING_RUNNING     = 'isMeetingRunning'
-        GET_MEETING_INFO       = 'getMeetingInfo'
-        GET_MEETINGS           = 'getMeetings'
-        GET_DEFAULT_CONFIG_XML = 'getDefaultConfigXML'
-        SET_CONFIG_XML         = 'setConfigXML'
-        GET_RECORDINGS         = 'getRecordings'
-        PUBLISH_RECORDINGS     = 'publishRecordings'
-        DELETE_RECORDINGS      = 'deleteRecordings'
-        UPDATE_RECORDINGS      = 'updateRecordings'
-        GET_ATTENDANCE         = 'getAttendance'
-
-else:
-    "3.x"
-    from abc import ABC
-    class ApiMethod(ABC):
-        VERSION                = ''
-        CREATE                 = 'create'
-        JOIN                   = 'join'
-        END                    = 'end'
-        IS_MEETING_RUNNING     = 'isMeetingRunning'
-        GET_MEETING_INFO       = 'getMeetingInfo'
-        GET_MEETINGS           = 'getMeetings'
-        GET_DEFAULT_CONFIG_XML = 'getDefaultConfigXML'
-        SET_CONFIG_XML         = 'setConfigXML'
-        GET_RECORDINGS         = 'getRecordings'
-        PUBLISH_RECORDINGS     = 'publishRecordings'
-        DELETE_RECORDINGS      = 'deleteRecordings'
-        GET_ATTENDANCE         = 'getAttendance'
+class ApiMethod:
+    VERSION                   = ''
+    CREATE                    = 'create'
+    JOIN                      = 'join'
+    END                       = 'end'
+    IS_MEETING_RUNNING        = 'isMeetingRunning'
+    GET_MEETING_INFO          = 'getMeetingInfo'
+    GET_MEETINGS              = 'getMeetings'
+    INSERT_DOCUMENT           = 'insertDocument'
+    SEND_CHAT_MESSAGE         = 'sendChatMessage'
+    GET_RECORDINGS            = 'getRecordings'
+    PUBLISH_RECORDINGS        = 'publishRecordings'
+    DELETE_RECORDINGS         = 'deleteRecordings'
+    UPDATE_RECORDINGS         = 'updateRecordings'
+    GET_RECORDING_TEXT_TRACKS = 'getRecordingTextTracks'
+    PUT_RECORDING_TEXT_TRACK  = 'putRecordingTextTrack'
+    GET_ATTENDANCE            = 'getAttendance'
