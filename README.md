@@ -69,7 +69,7 @@ A request that fails raises `bigbluebutton_api_python.exception.BBBException`. I
 
 - `setConfigXML` and `getDefaultConfigXML` are gone. BigBlueButton itself removed them in 2.4.
 - Joining with `role=` is preferred over the deprecated `password`. `end_meeting` no longer needs a password.
-- Python 3.9 or newer is required.
+- Python 3.10 or newer is required.
 
 ## Development
 
