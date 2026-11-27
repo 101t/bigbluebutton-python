@@ -2,7 +2,7 @@ import io
 import unittest
 from unittest import mock
 
-from bigbluebutton_api_python import BigBlueButton
+from bigbluebutton_api_python import AsyncBigBlueButton, BigBlueButton
 from bigbluebutton_api_python.exception import BBBException
 from bigbluebutton_api_python.parameters import BBBModule
 from bigbluebutton_api_python.util import UrlBuilder
@@ -64,6 +64,19 @@ class ClientTest(unittest.TestCase):
         urlopen.return_value = FakeResponse('{"response": {"returncode": "SUCCESS", "tracks": []}}',
                                             "application/json;charset=UTF-8")
         self.assertEqual(self.bbb.get_recording_text_tracks("r1").get_field("tracks"), [])
+
+
+class AsyncClientTest(unittest.IsolatedAsyncioTestCase):
+    @mock.patch("bigbluebutton_api_python.bigbluebutton.urlopen")
+    async def test_calls_are_awaitable_and_errors_propagate(self, urlopen):
+        bbb = AsyncBigBlueButton("https://bbb.example.com", SECRET)
+        self.assertIn("role=VIEWER", bbb.get_join_meeting_url("Bob", "m1", role=BigBlueButton.VIEWER))
+        urlopen.return_value = FakeResponse("<response><returncode>SUCCESS</returncode><running>true</running></response>")
+        self.assertTrue((await bbb.is_meeting_running("m1")).is_meeting_running())
+        urlopen.return_value = FakeResponse(
+            "<response><returncode>FAILED</returncode><messageKey>notFound</messageKey><message>x</message></response>")
+        with self.assertRaises(BBBException):
+            await bbb.get_meeting_info("missing")
 
 
 class BBBModuleTest(unittest.TestCase):

@@ -59,6 +59,23 @@ bbb.put_recording_text_track("record-id", kind="subtitles", lang="en_US", label=
 bbb.delete_recordings("record-id")
 ```
 
+### Async
+
+`AsyncBigBlueButton` takes the same arguments and has the same methods. Each API call is a coroutine, so it does not block the event loop. `get_join_meeting_url` only builds a string, so it stays a normal call.
+
+```python
+import asyncio
+from bigbluebutton_api_python import AsyncBigBlueButton
+
+async def main():
+    bbb = AsyncBigBlueButton("https://bbb.example.com/bigbluebutton/api/", "your-shared-secret")
+    await bbb.create_meeting("room-1")
+    running, meetings = await asyncio.gather(bbb.is_meeting_running("room-1"), bbb.get_meetings())
+    print(running.is_meeting_running(), meetings.get_meetings())
+
+asyncio.run(main())
+```
+
 A request that fails raises `bigbluebutton_api_python.exception.BBBException`. Its `.key` attribute holds the BBB `messageKey`.
 
 ## Supported endpoints
