@@ -2,7 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/bigbluebutton-python)](https://pypi.org/project/bigbluebutton-python/)
 
-Python client for the [BigBlueButton API](https://docs.bigbluebutton.org/development/api), covering the BigBlueButton 3.x endpoints.
+Python client for the [BigBlueButton API](https://docs.bigbluebutton.org/development/api), tested against BigBlueButton 4.0 and compatible with 2.4 and later.
 
 ## Installation
 

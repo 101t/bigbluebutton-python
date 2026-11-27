@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "bigbluebutton-python"
 version = "1.0.0"
-description = "Python client for the BigBlueButton 3.x API"
+description = "Python client for the BigBlueButton API (2.4 to 4.0, sync and async)"
 readme = "README.md"
 license = "LGPL-3.0-or-later"
 authors = [{ name = "Tarek Kalaji" }]

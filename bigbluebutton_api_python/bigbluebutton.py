@@ -142,7 +142,10 @@ class BigBlueButton:
                         ).encode() + f.read() + b"\r\n"
         body += ("--%s--\r\n" % boundary).encode()
         request = Request(url, data=body, headers={"Content-Type": "multipart/form-data; boundary=" + boundary})
-        return BaseResponse(self.__check(self._parse_response(urlopen(request, timeout=self.timeout))))
+        raw = self.__check(self._parse_response(urlopen(request, timeout=self.timeout)))
+        if raw.get("messageKey") == "upload_text_track_failed":  # BBB reports this failure with returncode SUCCESS
+            raise BBBException(raw["messageKey"], raw.get("message"))
+        return BaseResponse(raw)
 
     def get_attendance(self, meeting_id, meta=None):
         params = _with_meta({"meetingID": meeting_id}, meta)
